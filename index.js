@@ -83,16 +83,16 @@ client.on("interactionCreate", async interaction => {
       switch (interaction.customId) {
         case "lock":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { Connect: false });
-          return interaction.reply({ content: "Channel Locked!🔒", ephemeral: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐿𝑜𝒸𝓀𝑒𝒹!🔒", ephemeral: true });
         case "unlock":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { Connect: true });
-          return interaction.reply({ content: "Channel Unlocked!🔓", ephemeral: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒰𝓃𝓁𝑜𝒸𝓀𝑒𝒹!🔓", ephemeral: true });
         case "hide":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { ViewChannel: false });
-          return interaction.reply({ content: "Channel Hidden!🙈", ephemeral: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐻𝒾𝒹𝒹𝑒𝓃!🙈", ephemeral: true });
         case "show":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { ViewChannel: true });
-          return interaction.reply({ content: "Channel Shown!👁", ephemeral: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒮𝒽𝑜𝓌𝓃!👁", ephemeral: true });
         case "rename":
           const renameModal = new ModalBuilder()
             .setCustomId("renameModal")
@@ -122,7 +122,7 @@ client.on("interactionCreate", async interaction => {
             );
           return interaction.showModal(limitModal);
         case "delete":
-          await interaction.reply({ content: "Channel Deleted!🗑", ephemeral: true });
+          await interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒟𝑒𝓁𝑒𝓉𝑒𝒹!🗑", ephemeral: true });
           return interaction.channel.delete();
         case "kick":
           const options = interaction.channel.members.map(m => ({
@@ -146,13 +146,13 @@ client.on("interactionCreate", async interaction => {
       if (interaction.customId === "renameModal") {
         const newName = interaction.fields.getTextInputValue("newName");
         await interaction.channel.setName(newName);
-        return interaction.reply({ content: `Channel renamed to: ${newName}✏️`, ephemeral: true });
+        return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
       }
       if (interaction.customId === "limitModal") {
         const limit = parseInt(interaction.fields.getTextInputValue("userLimit"));
-        if (isNaN(limit) || limit < 0) return interaction.reply({ content: "Invalid number⚠️", ephemeral: true });
+        if (isNaN(limit) || limit < 0) return interaction.reply({ content: "𝐼𝓃𝓋𝒶𝓁𝒾𝒹 𝒩𝓊𝓂𝒷𝑒𝓇⚠️", ephemeral: true });
         await interaction.channel.setUserLimit(limit);
-        return interaction.reply({ content: `User limit set to ${limit}⚡`, ephemeral: true });
+        return interaction.reply({ content: `𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limit}👥`, ephemeral: true });
       }
     }
 
@@ -161,7 +161,7 @@ client.on("interactionCreate", async interaction => {
       const member = interaction.guild.members.cache.get(memberId);
       if (member && member.voice.channelId === interaction.channel.id) {
         await member.voice.disconnect();
-        return interaction.update({ content: `${member.displayName} kicked!👢`, components: [], ephemeral: true });
+        return interaction.update({ content: `${member.displayName} 𝒦𝒾𝒸𝓀𝑒𝒹!👢`, components: [], ephemeral: true });
       } else {
         return interaction.update({ content: "User not found in channel!", components: [], ephemeral: true });
       }
