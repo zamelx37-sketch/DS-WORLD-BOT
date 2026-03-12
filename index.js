@@ -36,7 +36,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
     // Create new VC with user's display name
     const voiceChannel = await newState.guild.channels.create({
-      name: `${displayName} '𝓥𝐂`,
+      name: `${displayName} 'VC`,
       type: 2, // Voice
       parent: newState.channel.parent
     });
