@@ -148,29 +148,33 @@ client.on("interactionCreate", async interaction => {
           return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
 
                // 🆕 زر Info
-        case "info":
-          const vc = interaction.channel;
-          const owner = vc.members.first()?.displayName || "Unknown";
-          const name = vc.name;
-          const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
-          const createdAt = vc.createdAt.toLocaleString();
-          const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
-          const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
+        
+         case "info":
+  const vc = interaction.channel;
+  const owner = vc.members.first()?.displayName || "Unknown";
+  const name = vc.name;
+  const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
+  const createdAt = vc.createdAt.toLocaleString();
+  const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
+  const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
-          const infoEmbed = new EmbedBuilder()
-            .setTitle(`${name} Info Panel`)
-            .setColor(0x5865f2)
-            .addFields(
-              { name: "Owner", value: `@${owner}`, inline: true },
-              { name: "Name", value: name, inline: true },
-              { name: "Limit", value: limit, inline: true },
-              { name: "Created At", value: createdAt, inline: false },
-              { name: "Hidden", value: hidden, inline: true },
-              { name: "Locked", value: locked, inline: true }
-            )
-            .setFooter({ text: "DS WORLD BOT" });
+  const infoEmbed = new EmbedBuilder()
+    .setTitle("✦ 𝒱𝒪𝐼𝒞𝐸 𝒞𝐻𝒜𝒩𝒩𝐸𝐿 𝐼𝒩𝐹𝒪 ✦")
+    .setColor(0x9b59b6) // لون أنيق بنفسجي
+    .setThumbnail("https://cdn.discordapp.com/emojis/1482387316088770681.png?size=96&quality=lossless")
+    .setDescription("╔══ ✦・✦・✦ ══╗\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\n╚══ ✦・✦・✦ ══╝")
+    .addFields(
+      { name: "👑 Owner", value: `@${owner}`, inline: true },
+      { name: "📛 Name", value: name, inline: true },
+      { name: "👥 Limit", value: limit, inline: true },
+      { name: "⏰ Created At", value: createdAt, inline: false },
+      { name: "🙈 Hidden", value: hidden, inline: true },
+      { name: "🔒 Locked", value: locked, inline: true }
+    )
+    .setFooter({ text: "♡ Powered by DS WORLD ♡" });
 
-          return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+  return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+
       }
     }
 
