@@ -161,24 +161,23 @@ case "info":
   const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
   const infoEmbed = new EmbedBuilder()
-    .setColor(0x9b59b6) // بنفسجي أنيق
-    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless")
-    .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
+    .setColor(0x9b59b6) // لون أنيق بنفسجي
+    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
+    .setDescription("\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\n")
     .addFields(
-      { name: "👑 Owner", value: `@${owner}`, inline: true },
-      { name: "📛 Name", value: name, inline: true },
-      { name: "👥 Limit", value: limit, inline: true },
-
-      { name: "⏰ Created At", value: createdAt, inline: true },
-      { name: "⏱️ Active For", value: activeFor, inline: true },
-      { name: "🧑‍🤝‍🧑 Co-Owners", value: coOwners, inline: true },
-
-      { name: "🙈 Hidden", value: hidden, inline: true },
-      { name: "🔒 Locked", value: locked, inline: true }
+      { name: "𝒪𝓌𝓃𝑒𝓇 👑", value: `@${owner}`, inline: true },
+      { name: "𝒩𝒶𝓂𝑒 📛", value: name, inline: true },
+      { name: "𝐿𝒾𝓂𝒾𝓉 👥", value: limit, inline: true },
+      { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 ⏰", value: createdAt, inline: false },
+      { name: "𝒜𝒸𝓉𝒾𝓋𝑒 𝐹𝑜𝓇 ⏱️", value: activeFor, inline: true },
+      { name: " 𝒞𝑜-𝑜𝓌𝓃𝑒𝓇𝓈 🧑‍🤝‍🧑", value: coOwners, inline: true },
+      { name: "𝐻𝒾𝒹𝒹𝑒𝓃 🙈", value: hidden, inline: true },
+      { name: "𝐿𝑜𝒸𝓀𝑒𝒹 🔒", value: locked, inline: true }
     )
-    .setFooter({ text: "✨ Powered by DS WORLD ✨" });
+    .setFooter({ text: " ✨ 𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝑜𝓇𝓁𝒹 ✨ " });
 
   return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+
 
       }
     }
