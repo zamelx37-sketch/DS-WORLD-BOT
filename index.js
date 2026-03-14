@@ -69,7 +69,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
         new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger).setEmoji("1481307134145597528"),
         new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary).setEmoji("1481307222771236996"),
         new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570"),
-        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary).setEmoji("ℹ️")
+        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary).setEmoji("1482387316088770681")
       );
 
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
