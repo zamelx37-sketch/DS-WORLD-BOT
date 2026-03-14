@@ -156,46 +156,46 @@ client.on("interactionCreate", async interaction => {
 
         // ✅ Info Button
         case "info":
-          const vc = interaction.channel;
-          const owner = vc.members.first()?.toString() || "Unknown";
-          const name = vc.name;
-          const limitValue = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
-          const createdAt = vc.createdAt.toLocaleString();
-          const seconds = Math.floor((Date.now() - vc.createdAt.getTime()) / 1000);
-          const minutes = Math.floor(seconds / 60);
-          const hours = Math.floor(minutes / 60);
-          const activeFor = hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m ${seconds % 60}s`;
-          const coOwners = "0/5"; 
-          const hidden = !vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "Yes" : "No";
-          const locked = !vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "Yes" : "No";
+  const vc = interaction.channel;
+  const owner = vc.members.first()?.toString() || "Unknown";
+  const name = vc.name;
+  const limitValue = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
+  const createdAt = vc.createdAt.toLocaleString();
+  const seconds = Math.floor((Date.now() - vc.createdAt.getTime()) / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const activeFor = hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m ${seconds % 60}s`;
+  const coOwners = "0/5"; 
+  const hidden = !vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "Yes" : "No";
+  const locked = !vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "Yes" : "No";
 
-          const infoEmbed = new EmbedBuilder()
-            .setColor(0x9b59b6)
-            .setDescription("♡ DS WORLD PANEL ♡")
-            .addFields(
-              { name: "👑 Owner :", value: owner, inline: false },
-              { name: "📛 Name :", value: name, inline: false },
-              { name: "👥 Limit :", value: limitValue, inline: false },
-              { name: "⏰ Created At :", value: createdAt, inline: false },
-              { name: "⚡ Active for :", value: activeFor, inline: false },
-              { name: "🤝 Co-owners :", value: coOwners, inline: false },
-              { name: "🙈 Hidden :", value: hidden, inline: false },
-              { name: "🔒 Locked :", value: locked, inline: false }
-            )
-            .setFooter({ text: "Powered by DS WORLD ✨" })
-            .setTimestamp();
+  const infoEmbed = new EmbedBuilder()
+    .setColor(0x9b59b6)
+    .setDescription("♡ DS WORLD PANEL ♡")
+    .addFields(
+      { name: "<:owner:1482387316088770681> Owner :", value: owner, inline: false },
+      { name: "<:name:1482406793639362748> Name :", value: name, inline: false },
+      { name: "<:limit:1481307222771236996> Limit :", value: limitValue, inline: false },
+      { name: "<:created:1481307321400299570> Created at :", value: createdAt, inline: false },
+      { name: "<:active:1481306958257455104> Active for :", value: activeFor, inline: false },
+      { name: "<:coowners:1482406793639362748> Co-owners :", value: coOwners, inline: false },
+      { name: "<:hidden:1481306721728204933> Hidden :", value: hidden, inline: false },
+      { name: "<:locked:1481306495932043346> Locked :", value: locked, inline: false }
+    )
+    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png") // الصورة فوق على اليمين
+    .setFooter({ text: "Powered by DS WORLD ✨" })
+    .setTimestamp();
 
-          return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+  return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
       }
     }
 
     // ✅ Modals
-    if (interaction.type === InteractionType.ModalSubmit) {
-      if (interaction.customId === "renameModal") {
-        const newName = interaction.fields.getTextInputValue("newName");
-        await interaction.channel.setName(newName);
-        return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
-      }
+    if (interaction.customId === "renameModal") {
+  const newName = interaction.fields.getTextInputValue("newName");
+  await interaction.channel.setName(newName);
+  return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
+}
       if (interaction.customId === "limitModal") {
         let limitValue = parseInt(interaction.fields.getTextInputValue("userLimit"));
         if (isNaN(limitValue) || limitValue < 0) return interaction.reply({ content: "Invalid Number⚠️", ephemeral: true });
