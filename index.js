@@ -165,14 +165,14 @@ case "info":
     .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
     .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
     .addFields(
-      { name: "👑 Owner", value: `@${owner}`, inline: false },
-      { name: "Name <:nameicon:1482407109705601198> ", value: name, inline: false }, // أيقونة Name
+      { name: "<:ownericon:1482411990331953373> Owner", value: `@${owner}`, inline: false }, // أيقونة Owner
+      { name: "<:nameicon:1482407109705601198> Name", value: name, inline: false }, // أيقونة Name
       { name: "<:limiticon:1482407403369795615> Limit", value: limit, inline: false }, // أيقونة Limit
       { name: "<:createdicon:1482408011518447668> Created At", value: createdAt, inline: false }, // أيقونة Created At
       { name: "<:activeicon:1482408245049032724> Active For", value: activeFor, inline: false }, // أيقونة Active For
-      { name: "<:coowner:1482406793639362748> Co-Owners", value: coOwners, inline: false }, // أيقونة Co-Owners
+      { name: "𝒞𝑜-𝑜𝓌𝓃𝑒𝓇𝓈 <:coowner:1482406793639362748> :", value: coOwners, inline: false }, // أيقونة Co-Owners
       { name: "<:hiddenicon:1481306721728204933> Hidden", value: hidden, inline: false }, // أيقونة Hidden
-      { name: "🔒 Locked", value: locked, inline: false }
+      { name: "<:lockedicon:1481306495932043346> Locked", value: locked, inline: false } // أيقونة Locked
     )
     .setFooter({ text: "✨ Powered by DS WORLD ✨" });
 
