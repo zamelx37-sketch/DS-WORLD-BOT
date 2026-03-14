@@ -1,92 +1,191 @@
+// DS WORLD BOT – Full Index.js Safe Version
+require('dotenv').config(); // Load .env
 const { 
   Client, 
   GatewayIntentBits, 
+  ChannelType,
   ActionRowBuilder, 
   ButtonBuilder, 
   ButtonStyle, 
-  EmbedBuilder 
+  EmbedBuilder, 
+  StringSelectMenuBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  InteractionType
 } = require("discord.js");
 
-const TOKEN = "TOKEN_DYALK"; 
+// ✅ Bot Token
+const TOKEN = process.env.TOKEN;
+
+// 🔹 Channel to monitor
 const CREATE_CHANNEL_ID = "1480913492574867519";
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildMessages
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers
   ]
 });
 
-client.once("ready", () => {
-  console.log("DS WORLD BOT ONLINE 🚀");
-});
+// Ready event
+client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
 
+// Voice State Update – Create VC
 client.on("voiceStateUpdate", async (oldState, newState) => {
-  if (newState.channelId === CREATE_CHANNEL_ID) {
-    // نصايب القناة الصوتية
-    const voiceChannel = await newState.guild.channels.create({
-      name: `${newState.member.user.username} Room`,
-      type: 2,
-      parent: newState.channel.parent
-    });
+  try {
+    if (newState.channelId === CREATE_CHANNEL_ID) {
+      const displayName = newState.member.displayName;
 
-    await newState.member.voice.setChannel(voiceChannel);
+      // Create VC
+      const voiceChannel = await newState.guild.channels.create({
+        name: `${displayName} 'VC`,
+        type: ChannelType.GuildVoice,
+        parent: newState.channel?.parent
+      });
 
-    // نصايب قناة نصية مرتبطة بالقناة الصوتية
-    const textChannel = await newState.guild.channels.create({
-      name: `${newState.member.user.username}-panel`,
-      type: 0, // Text
-      parent: newState.channel.parent
-    });
+      await newState.member.voice.setChannel(voiceChannel);
 
-    // Panel
-    const embed = new EmbedBuilder()
-      .setTitle("♡ Kamita Loves You♡")
-      .setDescription(
-        "୨ Control Panel ୧\nʟƐ ʳ⋆⋆ʳ ʒʖ♡ Welcome, " +
-          newState.member.user.username +
-          "! Enjoy your stay.\n[Developed by NextGen](https://nextgen.dev)"
-      )
-      .setColor(0x5865f2)
-      .setImage("https://cdn.discordapp.com/attachments/1410364493824917534/1481291852492570664/Copilot_20260311_132153.png");
+      // Embed
+      const embed = new EmbedBuilder()
+        .setTitle("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝐿𝒪𝒱𝐸𝒮 𝒴𝒪𝒰 ♡")
+        .setDescription(`𝒲𝐸𝐿𝐶𝒪𝑀𝐸, ${displayName}!\n𝐸𝓃𝒿𝑜𝓎 𝓎𝑜𝓊𝓇 𝓈𝓉𝒶𝓎.\n[𝒟𝑒𝓋𝑒𝓁𝑜𝓅𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷](https://discord.gg/PayB3YesXC)`)
+        .setColor(0x5865f2)
+        .setImage("https://cdn.discordapp.com/attachments/1410364493824917534/1481291852492570664/Copilot_20260311_132153.png");
 
-    // صف 1 (5 أزرار)
-    const row1 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId("lock").setLabel("Lock").setStyle(ButtonStyle.Danger).setEmoji("<:padlock:1481306495932043346>"),
-      new ButtonBuilder().setCustomId("unlock").setLabel("Unlock").setStyle(ButtonStyle.Success).setEmoji("<:unlock:1481306721728204933>"),
-      new ButtonBuilder().setCustomId("hide").setLabel("Hide").setStyle(ButtonStyle.Secondary).setEmoji("<:hide:1481306865622188184>"),
-      new ButtonBuilder().setCustomId("show").setLabel("Show").setStyle(ButtonStyle.Primary).setEmoji("<:unhide:1481306958257455104>"),
-      new ButtonBuilder().setCustomId("rename").setLabel("Rename").setStyle(ButtonStyle.Secondary).setEmoji("<:rename:1481307134145597528>")
-    );
+      // Buttons row 1
+      const row1 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId("lock").setLabel("Lock").setStyle(ButtonStyle.Danger).setEmoji("1481306495932043346"),
+        new ButtonBuilder().setCustomId("unlock").setLabel("Unlock").setStyle(ButtonStyle.Success).setEmoji("1481306624013504643"),
+        new ButtonBuilder().setCustomId("hide").setLabel("Hide").setStyle(ButtonStyle.Secondary).setEmoji("1481306721728204933"),
+        new ButtonBuilder().setCustomId("show").setLabel("Show").setStyle(ButtonStyle.Primary).setEmoji("1481306865622188184"),
+        new ButtonBuilder().setCustomId("rename").setLabel("Rename").setStyle(ButtonStyle.Secondary).setEmoji("1481306958257455104")
+      );
 
-    // صف 2 (3 أزرار)
-    const row2 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger).setEmoji("<:kick:1481307134145597528>"),
-      new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary).setEmoji("<:limit:1481307321400299570>"),
-      new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("<:delete:1481305290807709696>")
-    );
+      // Buttons row 2
+      const row2 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger).setEmoji("1481307134145597528"),
+        new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary).setEmoji("1481307222771236996"),
+        new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570")
+      );
 
-    // نرسل Panel فالقناة النصية
-    await textChannel.send({ embeds: [embed], components: [row1, row2] });
-  }
+      await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
+    }
 
-  // مسح القنوات الصوتية الفارغة + النصية المرتبطة
-  if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
-    if (oldState.channel.members.size === 0 && oldState.channel.parent) {
-      try {
-        const linkedText = oldState.guild.channels.cache.find(
-          c => c.name === `${oldState.channel.name}-panel`
-        );
-        if (linkedText) await linkedText.delete();
-
+    // Delete empty bot VC
+    if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
+      if (oldState.channel.members.size === 0 && oldState.channel.name.endsWith("VC") && oldState.channel.deletable) {
         await oldState.channel.delete();
-        console.log(`Deleted empty channel: ${oldState.channel.name}`);
-      } catch (err) {
-        console.error("Error deleting channel:", err);
+        console.log(`Deleted empty bot VC: ${oldState.channel.name}`);
       }
     }
+  } catch(err) {
+    console.error(err);
   }
 });
 
+// Interaction handling
+client.on("interactionCreate", async interaction => {
+  try {
+    // ✅ Buttons
+    if (interaction.isButton()) {
+      const everyone = interaction.guild.roles.everyone;
+
+      switch (interaction.customId) {
+        case "lock":
+          await interaction.channel.permissionOverwrites.edit(everyone, { Connect: false });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐿𝑜𝒸𝓀𝑒𝒹!🔒", ephemeral: true });
+        case "unlock":
+          await interaction.channel.permissionOverwrites.edit(everyone, { Connect: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒰𝓃𝓁𝑜𝒸𝓀𝑒𝒹!🔓", ephemeral: true });
+        case "hide":
+          await interaction.channel.permissionOverwrites.edit(everyone, { ViewChannel: false });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐻𝒾𝒹𝒹𝑒𝓃!🙈", ephemeral: true });
+        case "show":
+          await interaction.channel.permissionOverwrites.edit(everyone, { ViewChannel: true });
+          return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒮𝒽𝑜𝓌𝓃!👁", ephemeral: true });
+        case "rename":
+          const renameModal = new ModalBuilder()
+            .setCustomId("renameModal")
+            .setTitle("Rename Channel")
+            .addComponents(
+              new ActionRowBuilder().addComponents(
+                new TextInputBuilder()
+                  .setCustomId("newName")
+                  .setLabel("New Channel Name")
+                  .setStyle(TextInputStyle.Short)
+                  .setRequired(true)
+              )
+            );
+          return interaction.showModal(renameModal);
+        case "limit":
+          const limitModal = new ModalBuilder()
+            .setCustomId("limitModal")
+            .setTitle("Set User Limit")
+            .addComponents(
+              new ActionRowBuilder().addComponents(
+                new TextInputBuilder()
+                  .setCustomId("userLimit")
+                  .setLabel("Enter max users (0-99)")
+                  .setStyle(TextInputStyle.Short)
+                  .setRequired(true)
+              )
+            );
+          return interaction.showModal(limitModal);
+        case "delete":
+          await interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒟𝑒𝓁𝑒𝓉𝑒𝒹!🗑", ephemeral: true });
+          return interaction.channel.delete();
+        case "kick":
+          const options = interaction.channel.members.map(m => ({
+            label: m.displayName,
+            value: m.id
+          })).filter(m => m.value !== interaction.user.id && !interaction.guild.members.cache.get(m.value).user.bot);
+
+          if (options.length === 0) return interaction.reply({ content: "No other users in this channel!", ephemeral: true });
+
+          const menu = new StringSelectMenuBuilder()
+            .setCustomId("kickSelect")
+            .setPlaceholder("Select user to kick")
+            .addOptions(options);
+
+          const row = new ActionRowBuilder().addComponents(menu);
+          return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
+      }
+    }
+
+    // ✅ Modals
+    if (interaction.type === InteractionType.ModalSubmit) {
+      if (interaction.customId === "renameModal") {
+        const newName = interaction.fields.getTextInputValue("newName");
+        await interaction.channel.setName(newName);
+        return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
+      }
+      if (interaction.customId === "limitModal") {
+        let limit = parseInt(interaction.fields.getTextInputValue("userLimit"));
+        if (isNaN(limit) || limit < 0) return interaction.reply({ content: "Invalid Number⚠️", ephemeral: true });
+        if (limit > 99) limit = 99;
+        await interaction.channel.setUserLimit(limit);
+        return interaction.reply({ content: `𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limit}👥`, ephemeral: true });
+      }
+    }
+
+    // ✅ Kick menu
+    if (interaction.isStringSelectMenu() && interaction.customId === "kickSelect") {
+      const memberId = interaction.values[0];
+      const member = interaction.guild.members.cache.get(memberId);
+      if (member && member.voice.channelId === interaction.channel.id) {
+        await member.voice.disconnect();
+        return interaction.update({ content: `${member.displayName} 𝒦𝒾𝒸𝓀𝑒𝒹!👢`, components: [], ephemeral: true });
+      } else {
+        return interaction.update({ content: "User not found in channel!", components: [], ephemeral: true });
+      }
+    }
+
+  } catch(err) { console.error(err); }
+});
+
+// Login
 client.login(TOKEN);
