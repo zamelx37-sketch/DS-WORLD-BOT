@@ -64,11 +64,12 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
         new ButtonBuilder().setCustomId("rename").setLabel("Rename").setStyle(ButtonStyle.Secondary).setEmoji("1481306958257455104")
       );
 
-      // Buttons row 2
+      // Buttons row 2 (مع زر Info مدمج)
       const row2 = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger).setEmoji("1481307134145597528"),
         new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary).setEmoji("1481307222771236996"),
-        new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570")
+        new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570"),
+        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary).setEmoji("ℹ️")
       );
 
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
@@ -89,10 +90,10 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 // Interaction handling
 client.on("interactionCreate", async interaction => {
   try {
+    const everyone = interaction.guild.roles.everyone;
+
     // ✅ Buttons
     if (interaction.isButton()) {
-      const everyone = interaction.guild.roles.everyone;
-
       switch (interaction.customId) {
         case "lock":
           await interaction.channel.permissionOverwrites.edit(everyone, { Connect: false });
@@ -152,6 +153,39 @@ client.on("interactionCreate", async interaction => {
 
           const row = new ActionRowBuilder().addComponents(menu);
           return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
+
+        // ✅ Info Button
+        case "info":
+          const vc = interaction.channel;
+          const owner = vc.members.first()?.toString() || "Unknown";
+          const name = vc.name;
+          const limitValue = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
+          const createdAt = vc.createdAt.toLocaleString();
+          const seconds = Math.floor((Date.now() - vc.createdAt.getTime()) / 1000);
+          const minutes = Math.floor(seconds / 60);
+          const hours = Math.floor(minutes / 60);
+          const activeFor = hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m ${seconds % 60}s`;
+          const coOwners = "0/5"; 
+          const hidden = !vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "Yes" : "No";
+          const locked = !vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "Yes" : "No";
+
+          const infoEmbed = new EmbedBuilder()
+            .setColor(0x9b59b6)
+            .setDescription("♡ DS WORLD PANEL ♡")
+            .addFields(
+              { name: "👑 Owner :", value: owner, inline: false },
+              { name: "📛 Name :", value: name, inline: false },
+              { name: "👥 Limit :", value: limitValue, inline: false },
+              { name: "⏰ Created At :", value: createdAt, inline: false },
+              { name: "⚡ Active for :", value: activeFor, inline: false },
+              { name: "🤝 Co-owners :", value: coOwners, inline: false },
+              { name: "🙈 Hidden :", value: hidden, inline: false },
+              { name: "🔒 Locked :", value: locked, inline: false }
+            )
+            .setFooter({ text: "Powered by DS WORLD ✨" })
+            .setTimestamp();
+
+          return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
       }
     }
 
@@ -163,11 +197,11 @@ client.on("interactionCreate", async interaction => {
         return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
       }
       if (interaction.customId === "limitModal") {
-        let limit = parseInt(interaction.fields.getTextInputValue("userLimit"));
-        if (isNaN(limit) || limit < 0) return interaction.reply({ content: "Invalid Number⚠️", ephemeral: true });
-        if (limit > 99) limit = 99;
-        await interaction.channel.setUserLimit(limit);
-        return interaction.reply({ content: `𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limit}👥`, ephemeral: true });
+        let limitValue = parseInt(interaction.fields.getTextInputValue("userLimit"));
+        if (isNaN(limitValue) || limitValue < 0) return interaction.reply({ content: "Invalid Number⚠️", ephemeral: true });
+        if (limitValue > 99) limitValue = 99;
+        await interaction.channel.setUserLimit(limitValue);
+        return interaction.reply({ content: `𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limitValue}👥`, ephemeral: true });
       }
     }
 
