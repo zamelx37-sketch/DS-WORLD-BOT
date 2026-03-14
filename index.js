@@ -164,14 +164,14 @@ client.on("interactionCreate", async interaction => {
     .setThumbnail("https://cdn.discordapp.com/emojis/1482387316088770681.png?size=96&quality=lossless")
     .setDescription("╔══ ✦・✦・✦ ══╗\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\n╚══ ✦・✦・✦ ══╝")
     .addFields(
-      { name: "👑 Owner", value: `@${owner}`, inline: true },
-      { name: "📛 Name", value: name, inline: true },
-      { name: "👥 Limit", value: limit, inline: true },
-      { name: "⏰ Created At", value: createdAt, inline: false },
-      { name: "🙈 Hidden", value: hidden, inline: true },
-      { name: "🔒 Locked", value: locked, inline: true }
+      { name: "𝒪𝓌𝓃𝑒𝓇 👑", value: `@${owner}`, inline: true },
+      { name: "𝒩𝒶𝓂𝑒 📛", value: name, inline: true },
+      { name: "𝐿𝒾𝓂𝒾𝓉 👥", value: limit, inline: true },
+      { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 ⏰", value: createdAt, inline: false },
+      { name: "𝐻𝒾𝒹𝒹𝑒𝓃 🙈", value: hidden, inline: true },
+      { name: "𝐿𝑜𝒸𝓀𝑒𝒹 🔒", value: locked, inline: true }
     )
-    .setFooter({ text: "♡ Powered by DS WORLD ♡" });
+    .setFooter({ text: " 𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝓈 𝒲𝑜𝓇𝓁𝒹 ✨ " });
 
   return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
 
