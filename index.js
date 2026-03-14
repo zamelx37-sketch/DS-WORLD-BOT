@@ -115,16 +115,19 @@ client.on("interactionCreate", async interaction => {
           return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒮𝒽𝑜𝓌𝓃!👁", ephemeral: true });
 
         case "rename":
-          const renameModal = new ModalBuilder()
-            .setCustomId("renameModal")
-            .setTitle("Rename Channel")
-            .addComponents(
-              new ActionRowBuilder().addComponents(
-                new TextInputBuilder()
-                  .setCustomId("newName")
-                  .setLabel("New Channel Name")
-                  .setStyle(TextInputStyle.Short)
-                  .setRequired(true)
+         const renameModal = new ModalBuilder()
+  .setCustomId("renameModal")
+  .setTitle("Rename Channel")
+  .addComponents(
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("newName")
+        .setLabel("New Channel Name")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    )
+  ); // ✅ هنا كتسالي بلا قوس زايد
+return interaction.showModal(renameModal);
               )
             );
           return interaction.showModal(renameModal);
@@ -172,20 +175,19 @@ client.on("interactionCreate", async interaction => {
             );
           return interaction.showModal(renameModal);
         case "limit":
-          const limitModal = new ModalBuilder()
-            .setCustomId("limitModal")
-            .setTitle("Set User Limit")
-            .addComponents(
-              new ActionRowBuilder().addComponents(
-                new TextInputBuilder()
-                  .setCustomId("userLimit")
-                  .setLabel("Enter max users")
-                  .setStyle(TextInputStyle.Short)
-                  .setRequired(true)
-              )
-            );
-          return interaction.showModal(limitModal);
-        case "delete":
+  const limitModal = new ModalBuilder()
+    .setCustomId("limitModal")
+    .setTitle("Set User Limit")
+    .addComponents(
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId("userLimit")
+          .setLabel("Enter max users")
+          .setStyle(TextInputStyle.Short)
+          .setRequired(true)
+      )
+    ); // ✅ نفس التصحيح هنا
+  return interaction.showModal(limitModal);        case "delete":
           await interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒟𝑒𝓁𝑒𝓉𝑒𝒹!🗑", ephemeral: true });
           return interaction.channel.delete();
         case "kick":
