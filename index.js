@@ -264,7 +264,8 @@ client.on("interactionCreate", async interaction => {
 
         return interaction.update({content:`${member.displayName} is now Co Owner`,components:[]});
 
-      }
+    
+    }
 
     }
 
