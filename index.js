@@ -147,7 +147,7 @@ client.on("interactionCreate", async interaction => {
           const row = new ActionRowBuilder().addComponents(menu);
           return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
 
-        // 🆕 زر Info
+               // 🆕 زر Info
         case "info":
           const vc = interaction.channel;
           const owner = vc.members.first()?.displayName || "Unknown";
@@ -162,3 +162,30 @@ client.on("interactionCreate", async interaction => {
             .setColor(0x5865f2)
             .addFields(
               { name: "Owner", value: `@${owner}`, inline: true },
+              { name: "Name", value: name, inline: true },
+              { name: "Limit", value: limit, inline: true },
+              { name: "Created At", value: createdAt, inline: false },
+              { name: "Hidden", value: hidden, inline: true },
+              { name: "Locked", value: locked, inline: true }
+            )
+            .setFooter({ text: "DS WORLD BOT" });
+
+          return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+      }
+    }
+
+    if (interaction.type === InteractionType.ModalSubmit) {
+      // باقي الحالات ديال renameModal و limitModal...
+    }
+
+    if (interaction.isStringSelectMenu() && interaction.customId === "kickSelect") {
+      // باقي الكود ديال kick...
+    }
+
+  } catch(err) { 
+    console.error(err); 
+  }
+});
+
+// ✅ Login using environment variable
+client.login(TOKEN);
