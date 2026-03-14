@@ -66,8 +66,18 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570"),
       new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Primary).setEmoji("1482387316088770681"),
     );
+     await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
+// Buttons row3 (زر Co-Owners بوحدو)
+const row3 = new ActionRowBuilder().addComponents(
+  new ButtonBuilder()
+    .setCustomId("coowners")
+    .setLabel("Co-Owners")
+    .setStyle(ButtonStyle.Secondary)
+    .setEmoji("1482406793639362748") // أيقونة Co-Owners
+);
 
-    await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
+    await voiceChannel.send({ embeds: [embed], components: [row1, row2, row3] });
+
   }
 
   // ✅ Delete **only bot-created VC** if empty
