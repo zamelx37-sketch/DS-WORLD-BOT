@@ -1,5 +1,4 @@
 // DS WORLD BOT – Full Index.js Safe Version
-require('dotenv').config(); // Load .env
 const { 
   Client, 
   GatewayIntentBits, 
