@@ -193,21 +193,22 @@ client.on("interactionCreate", async interaction => {
   const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
   const infoEmbed = new EmbedBuilder()
-    .setTitle(`${name} Info Panel`)
-    .setColor(0x5865f2)
+    .setColor(0x9b59b6)
+    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
+    .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
     .addFields(
-      { name: "Owner", value: `@${owner}`, inline: true },
-      { name: "Name", value: name, inline: true },
-      { name: "Limit", value: limit, inline: true },
-      { name: "Created At", value: createdAt, inline: false },
-      { name: "Hidden", value: hidden, inline: true },
-      { name: "Locked", value: locked, inline: true }
+      { name: "<:ownericon:1482411990331953373> Owner", value: `@${owner}`, inline: false }, // أيقونة Owner
+      { name: "<:nameicon:1482407109705601198> Name", value: name, inline: false }, // أيقونة Name
+      { name: "<:limiticon:1482407403369795615> Limit", value: limit, inline: false }, // أيقونة Limit
+      { name: "<:createdicon:1482408011518447668> Created At", value: createdAt, inline: false }, // أيقونة Created At
+      { name: "<:activeicon:1482408245049032724> Active For", value: activeFor, inline: false }, // أيقونة Active For
+      { name: "<:coowner:1482406793639362748> Co-Owners", value: coOwners, inline: false }, // أيقونة Co-Owners
+      { name: "<:hiddenicon:1481306721728204933> Hidden", value: hidden, inline: false }, // أيقونة Hidden
+      { name: "<:lockedicon:1481306495932043346> Locked", value: locked, inline: false } // أيقونة Locked
     )
-    .setFooter({ text: "DS WORLD BOT" });
+    .setFooter({ text: "✨ Powered by DS WORLD ✨" });
 
-  return interaction.reply({ embeds: [infoEmbed], ephemeral: true });      }
-
-    }
+  return interaction.reply({ embeds: [infoEmbed], ephemeral: true });    }
 
     if(interaction.type===InteractionType.ModalSubmit){
 
