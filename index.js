@@ -155,25 +155,28 @@ client.on("interactionCreate", async interaction => {
   const name = vc.name;
   const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
   const createdAt = vc.createdAt.toLocaleString();
+  const activeFor = Math.floor((Date.now() - vc.createdAt.getTime()) / 1000) + "s";
+  const coOwners = "0/5"; // تقدر تبدلها إذا عندك نظام Co-Owners
   const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
   const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
   const infoEmbed = new EmbedBuilder()
-    .setTitle(" 𝒱𝒪𝐼𝒞𝐸 𝒞𝐻𝒜𝒩𝒩𝐸𝐿 𝐼𝒩𝐹𝒪  ")
     .setColor(0x9b59b6) // لون أنيق بنفسجي
-    .setThumbnail("https://cdn.discordapp.com/emojis/1482387316088770681.png?size=96&quality=lossless")
-    .setDescription("\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\    .addFields(
-      { name: "𝒪𝓌𝓃𝑒𝓇👑", value: `@${owner}`, inline: true },
-      { name: "𝒩𝒶𝓂𝑒📛", value: name, inline: true },
-      { name: "𝐿𝒾𝓂𝒾𝓉👥", value: limit, inline: true },
+    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
+    .setDescription("\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\n")
+    .addFields(
+      { name: "𝒪𝓌𝓃𝑒𝓇 👑", value: `@${owner}`, inline: true },
+      { name: "𝒩𝒶𝓂𝑒 📛", value: name, inline: true },
+      { name: "𝐿𝒾𝓂𝒾𝓉 👥", value: limit, inline: true },
       { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 ⏰", value: createdAt, inline: false },
+      { name: "⏱️ Active For", value: activeFor, inline: true },
+      { name: "🧑‍🤝‍🧑 Co-Owners", value: coOwners, inline: true },
       { name: "𝐻𝒾𝒹𝒹𝑒𝓃 🙈", value: hidden, inline: true },
       { name: "𝐿𝑜𝒸𝓀𝑒𝒹 🔒", value: locked, inline: true }
     )
-    .setFooter({ text: " 𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝓈 𝒲𝑜𝓇𝓁𝒹 ✨ " });
+    .setFooter({ text: " ✨ 𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝑜𝓇𝓁𝒹 ✨ " });
 
   return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
-
       }
     }
 
