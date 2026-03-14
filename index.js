@@ -59,11 +59,12 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       new ButtonBuilder().setCustomId("rename").setLabel("Rename").setStyle(ButtonStyle.Secondary).setEmoji("1481306958257455104")
     );
 
-    // Buttons row2
+    // Buttons row2 (زدت زر Info هنا)
     const row2 = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger).setEmoji("1481307134145597528"),
       new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary).setEmoji("1481307222771236996"),
-      new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570")
+      new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger).setEmoji("1481307321400299570"),
+      new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Primary).setEmoji("ℹ️")
     );
 
     await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
@@ -82,7 +83,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
   }
 });
 
-// Interaction handling (Buttons, Modals, Kick, Limit)
+// Interaction handling (Buttons, Modals, Kick, Limit, Info)
 client.on("interactionCreate", async interaction => {
   try {
     if (interaction.isButton()) {
@@ -145,36 +146,22 @@ client.on("interactionCreate", async interaction => {
 
           const row = new ActionRowBuilder().addComponents(menu);
           return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
-      }
-    }
 
-    if (interaction.type === InteractionType.ModalSubmit) {
-      if (interaction.customId === "renameModal") {
-        const newName = interaction.fields.getTextInputValue("newName");
-        await interaction.channel.setName(newName);
-        return interaction.reply({ content: `𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`, ephemeral: true });
-      }
-      if (interaction.customId === "limitModal") {
-        const limit = parseInt(interaction.fields.getTextInputValue("userLimit"));
-        if (isNaN(limit) || limit < 0) return interaction.reply({ content: "Invalid Number⚠️", ephemeral: true });
-        await interaction.channel.setUserLimit(limit);
-        return interaction.reply({ content: `𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limit}👥`, ephemeral: true });
-      }
-    }
+        // 🆕 زر Info
+        case "info":
+          const vc = interaction.channel;
+          const owner = vc.members.first()?.displayName || "Unknown";
+          const name = vc.name;
+          const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
+          const createdAt = vc.createdAt.toLocaleString();
+          const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
+          const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
-    if (interaction.isStringSelectMenu() && interaction.customId === "kickSelect") {
-      const memberId = interaction.values[0];
-      const member = interaction.guild.members.cache.get(memberId);
-      if (member && member.voice.channelId === interaction.channel.id) {
-        await member.voice.disconnect();
-        return interaction.update({ content: `${member.displayName} 𝒦𝒾𝒸𝓀𝑒𝒹!👢`, components: [], ephemeral: true });
-      } else {
-        return interaction.update({ content: "User not found in channel!", components: [], ephemeral: true });
-      }
-    }
-
-  } catch(err) { console.error(err); }
-});
-
-// ✅ Login using environment variable
-client.login(TOKEN);
+          const infoEmbed = new EmbedBuilder()
+            .setTitle(`${name} Info Panel`)
+            .setColor(0x5865f2)
+            .addFields(
+              { name: "Owner", value: `@${owner}`, inline: true },
+              { name: "Name", value: name, inline: true },
+              { name: "Limit", value: limit, inline: true },
+              { name: "Created At", value: createdAt, inline: false
