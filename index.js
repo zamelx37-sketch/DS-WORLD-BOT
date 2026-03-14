@@ -94,130 +94,125 @@ client.on("interactionCreate", async interaction => {
       switch(interaction.customId){
 
         case "lock":
-        await interaction.channel.permissionOverwrites.edit(everyone,{Connect:false});
-        return interaction.reply({content:"Channel Locked 🔒",ephemeral:true});
+          await interaction.channel.permissionOverwrites.edit(everyone,{Connect:false});
+          return interaction.reply({content:"Channel Locked 🔒",ephemeral:true});
 
         case "unlock":
-        await interaction.channel.permissionOverwrites.edit(everyone,{Connect:true});
-        return interaction.reply({content:"Channel Unlocked 🔓",ephemeral:true});
+          await interaction.channel.permissionOverwrites.edit(everyone,{Connect:true});
+          return interaction.reply({content:"Channel Unlocked 🔓",ephemeral:true});
 
         case "hide":
-        await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:false});
-        return interaction.reply({content:"Channel Hidden 🙈",ephemeral:true});
+          await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:false});
+          return interaction.reply({content:"Channel Hidden 🙈",ephemeral:true});
 
         case "show":
-        await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:true});
-        return interaction.reply({content:"Channel Visible 👁",ephemeral:true});
+          await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:true});
+          return interaction.reply({content:"Channel Visible 👁",ephemeral:true});
 
         case "rename":
-
-        const renameModal = new ModalBuilder()
-        .setCustomId("renameModal")
-        .setTitle("Rename Channel")
-        .addComponents(
-          new ActionRowBuilder().addComponents(
-            new TextInputBuilder()
-            .setCustomId("newName")
-            .setLabel("New Name")
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
-          )
-        );
-
-        return interaction.showModal(renameModal);
+          const renameModal = new ModalBuilder()
+            .setCustomId("renameModal")
+            .setTitle("Rename Channel")
+            .addComponents(
+              new ActionRowBuilder().addComponents(
+                new TextInputBuilder()
+                  .setCustomId("newName")
+                  .setLabel("New Name")
+                  .setStyle(TextInputStyle.Short)
+                  .setRequired(true)
+              )
+            );
+          return interaction.showModal(renameModal);
 
         case "limit":
-
-        const limitModal = new ModalBuilder()
-        .setCustomId("limitModal")
-        .setTitle("User Limit")
-        .addComponents(
-          new ActionRowBuilder().addComponents(
-            new TextInputBuilder()
-            .setCustomId("userLimit")
-            .setLabel("Enter limit (0-99)")
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
-          )
-        );
-
-        return interaction.showModal(limitModal);
+          const limitModal = new ModalBuilder()
+            .setCustomId("limitModal")
+            .setTitle("User Limit")
+            .addComponents(
+              new ActionRowBuilder().addComponents(
+                new TextInputBuilder()
+                  .setCustomId("userLimit")
+                  .setLabel("Enter limit (0-99)")
+                  .setStyle(TextInputStyle.Short)
+                  .setRequired(true)
+              )
+            );
+          return interaction.showModal(limitModal);
 
         case "delete":
-        await interaction.reply({content:"Channel Deleted 🗑",ephemeral:true});
-        return interaction.channel.delete();
+          await interaction.reply({content:"Channel Deleted 🗑",ephemeral:true});
+          return interaction.channel.delete();
 
         case "kick":
+          const options = interaction.channel.members
+            .filter(m=>!m.user.bot && m.id!==interaction.user.id)
+            .map(m=>({label:m.displayName,value:m.id}));
 
-        const options = interaction.channel.members
-        .filter(m=>!m.user.bot && m.id!==interaction.user.id)
-        .map(m=>({label:m.displayName,value:m.id}));
+          if(options.length===0)
+            return interaction.reply({content:"No users to kick",ephemeral:true});
 
-        if(options.length===0)
-        return interaction.reply({content:"No users to kick",ephemeral:true});
+          const kickMenu = new StringSelectMenuBuilder()
+            .setCustomId("kickSelect")
+            .setPlaceholder("Select user")
+            .addOptions(options);
 
-        const kickMenu = new StringSelectMenuBuilder()
-        .setCustomId("kickSelect")
-        .setPlaceholder("Select user")
-        .addOptions(options);
-
-        const kickRow = new ActionRowBuilder().addComponents(kickMenu);
-
-        return interaction.reply({content:"Select user to kick:",components:[kickRow],ephemeral:true});
+          const kickRow = new ActionRowBuilder().addComponents(kickMenu);
+          return interaction.reply({content:"Select user to kick:",components:[kickRow],ephemeral:true});
 
         case "coowners":
+          const members = interaction.channel.members
+            .filter(m=>!m.user.bot)
+            .map(m=>({label:m.displayName,value:m.id}));
 
-        const members = interaction.channel.members
-        .filter(m=>!m.user.bot)
-        .map(m=>({label:m.displayName,value:m.id}));
+          if(members.length===0)
+            return interaction.reply({content:"No users in VC",ephemeral:true});
 
-        if(members.length===0)
-        return interaction.reply({content:"No users in VC",ephemeral:true});
+          const coMenu = new StringSelectMenuBuilder()
+            .setCustomId("coownerSelect")
+            .setPlaceholder("Select Co Owner")
+            .addOptions(members);
 
-        const coMenu = new StringSelectMenuBuilder()
-        .setCustomId("coownerSelect")
-        .setPlaceholder("Select Co Owner")
-        .addOptions(members);
-
-        const coRow = new ActionRowBuilder().addComponents(coMenu);
-
-        return interaction.reply({content:"Select Co Owner:",components:[coRow],ephemeral:true});
+          const coRow = new ActionRowBuilder().addComponents(coMenu);
+          return interaction.reply({content:"Select Co Owner:",components:[coRow],ephemeral:true});
 
         case "info":
-  const vc = interaction.channel;
-  const owner = vc.members.first()?.displayName || "Unknown";
-  const name = vc.name;
-  const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
-  const createdAt = vc.createdAt.toLocaleString();
-  const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
-  const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
+          const vc = interaction.channel;
+          const owner = vc.members.first()?.displayName || "Unknown";
+          const name = vc.name;
+          const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
+          const createdAt = vc.createdAt.toLocaleString();
+          const activeFor = "N/A";
+          const coOwners = "0/5";
+          const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
+          const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
-  const infoEmbed = new EmbedBuilder()
-    .setColor(0x9b59b6)
-    .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
-    .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
-    .addFields(
-      { name: "<:ownericon:1482411990331953373> Owner", value: `@${owner}`, inline: false }, // أيقونة Owner
-      { name: "<:nameicon:1482407109705601198> Name", value: name, inline: false }, // أيقونة Name
-      { name: "<:limiticon:1482407403369795615> Limit", value: limit, inline: false }, // أيقونة Limit
-      { name: "<:createdicon:1482408011518447668> Created At", value: createdAt, inline: false }, // أيقونة Created At
-      { name: "<:activeicon:1482408245049032724> Active For", value: activeFor, inline: false }, // أيقونة Active For
-      { name: "<:coowner:1482406793639362748> Co-Owners", value: coOwners, inline: false }, // أيقونة Co-Owners
-      { name: "<:hiddenicon:1481306721728204933> Hidden", value: hidden, inline: false }, // أيقونة Hidden
-      { name: "<:lockedicon:1481306495932043346> Locked", value: locked, inline: false } // أيقونة Locked
-    )
-    .setFooter({ text: "✨ Powered by DS WORLD ✨" });
+          const infoEmbed = new EmbedBuilder()
+            .setColor(0x9b59b6)
+            .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless")
+            .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
+            .addFields(
+              { name: "Owner", value: `@${owner}`, inline: false },
+              { name: "Name", value: name, inline: false },
+              { name: "Limit", value: limit, inline: false },
+              { name: "Created At", value: createdAt, inline: false },
+              { name: "Active For", value: activeFor, inline: false },
+              { name: "Co-Owners", value: coOwners, inline: false },
+              { name: "Hidden", value: hidden, inline: false },
+              { name: "Locked", value: locked, inline: false }
+            )
+            .setFooter({ text: "✨ Powered by DS WORLD ✨" });
 
-  return interaction.reply({ embeds: [infoEmbed], ephemeral: true });    }
+          return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
+      }
+
+    }
 
     if(interaction.type===InteractionType.ModalSubmit){
 
       if(interaction.customId==="renameModal"){
 
         const newName = interaction.fields.getTextInputValue("newName");
-
         await interaction.channel.setName(newName);
-
         return interaction.reply({content:`Channel renamed to ${newName}`,ephemeral:true});
 
       }
@@ -225,14 +220,10 @@ client.on("interactionCreate", async interaction => {
       if(interaction.customId==="limitModal"){
 
         let limit = parseInt(interaction.fields.getTextInputValue("userLimit"));
-
         if(isNaN(limit)||limit<0)
-        return interaction.reply({content:"Invalid number",ephemeral:true});
-
+          return interaction.reply({content:"Invalid number",ephemeral:true});
         if(limit>99) limit=99;
-
         await interaction.channel.setUserLimit(limit);
-
         return interaction.reply({content:`User limit set to ${limit}`,ephemeral:true});
 
       }
@@ -244,9 +235,7 @@ client.on("interactionCreate", async interaction => {
       if(interaction.customId==="kickSelect"){
 
         const member = interaction.guild.members.cache.get(interaction.values[0]);
-
         await member.voice.disconnect();
-
         return interaction.update({content:`${member.displayName} kicked`,components:[]});
 
       }
@@ -254,18 +243,14 @@ client.on("interactionCreate", async interaction => {
       if(interaction.customId==="coownerSelect"){
 
         const memberId = interaction.values[0];
-
         await interaction.channel.permissionOverwrites.edit(memberId,{
           ManageChannels:true,
           MoveMembers:true
         });
-
         const member = interaction.guild.members.cache.get(memberId);
-
         return interaction.update({content:`${member.displayName} is now Co Owner`,components:[]});
 
-    
-    }
+      }
 
     }
 
