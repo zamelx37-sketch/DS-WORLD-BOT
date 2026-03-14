@@ -166,7 +166,7 @@ case "info":
     .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
     .addFields(
       { name: "👑 Owner", value: `@${owner}`, inline: false },
-      { name: "<:nameicon:1482407109705601198> Name", value: name, inline: false }, // أيقونة Name
+      { name: "Name <:nameicon:1482407109705601198> ", value: name, inline: false }, // أيقونة Name
       { name: "<:limiticon:1482407403369795615> Limit", value: limit, inline: false }, // أيقونة Limit
       { name: "<:createdicon:1482408011518447668> Created At", value: createdAt, inline: false }, // أيقونة Created At
       { name: "<:activeicon:1482408245049032724> Active For", value: activeFor, inline: false }, // أيقونة Active For
