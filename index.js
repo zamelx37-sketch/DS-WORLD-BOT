@@ -164,4 +164,4 @@ client.on("interactionCreate", async interaction => {
               { name: "Owner", value: `@${owner}`, inline: true },
               { name: "Name", value: name, inline: true },
               { name: "Limit", value: limit, inline: true },
-              { name: "Created At", value: createdAt, inline: false
+             { name: "Created At", value: createdAt, inline: false },
