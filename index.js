@@ -101,15 +101,19 @@ client.on("interactionCreate", async interaction => {
         case "lock":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { Connect: false });
           return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐿𝑜𝒸𝓀𝑒𝒹!🔒", ephemeral: true });
+
         case "unlock":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { Connect: true });
           return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒰𝓃𝓁𝑜𝒸𝓀𝑒𝒹!🔓", ephemeral: true });
+
         case "hide":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { ViewChannel: false });
           return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐻𝒾𝒹𝒹𝑒𝓃!🙈", ephemeral: true });
+
         case "show":
           await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { ViewChannel: true });
           return interaction.reply({ content: "𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒮𝒽𝑜𝓌𝓃!👁", ephemeral: true });
+
         case "rename":
           const renameModal = new ModalBuilder()
             .setCustomId("renameModal")
@@ -121,6 +125,49 @@ client.on("interactionCreate", async interaction => {
                   .setLabel("New Channel Name")
                   .setStyle(TextInputStyle.Short)
                   .setRequired(true)
+              )
+            );
+          return interaction.showModal(renameModal);
+
+        case "coowners":
+          const options = interaction.channel.members.map(m => ({
+            label: m.displayName,
+            value: m.id
+          })).filter(m => m.value !== interaction.user.id);
+
+          if (options.length === 0) {
+            return interaction.reply({ content: "⚠️ ما كاين حتى عضو فالقناة باش تعطيه Co-Owner.", ephemeral: true });
+          }
+
+          const menu = new StringSelectMenuBuilder()
+            .setCustomId("coownerSelect")
+            .setPlaceholder("اختار العضو اللي غادي تعطيه Co-Owner")
+            .addOptions(options);
+
+          const row = new ActionRowBuilder().addComponents(menu);
+
+          const coOwnersEmbed = new EmbedBuilder()
+            .setColor(0x2ecc71)
+            .setDescription("♡ 𝒞𝑜-𝒪𝓌𝓃𝑒𝓇𝓈 𝒫𝒜𝒩𝐸𝐿 ♡")
+            .setFooter({ text: "✨ Powered by DS WORLD ✨" });
+
+          return interaction.reply({ embeds: [coOwnersEmbed], components: [row], ephemeral: true });
+      }
+    }
+
+    // Handling ديال الاختيار من الـ Select Menu
+    if (interaction.isStringSelectMenu() && interaction.customId === "coownerSelect") {
+      const selectedUserId = interaction.values[0];
+      const member = await interaction.guild.members.fetch(selectedUserId);
+
+      return interaction.reply({ content: `✅ ${member.displayName} ولى Co-Owner ديال القناة!`, ephemeral: true });
+    }
+
+  } catch(err) {
+    console.error(err);
+  }
+});
+
               )
             );
           return interaction.showModal(renameModal);
@@ -158,6 +205,15 @@ client.on("interactionCreate", async interaction => {
           return interaction.reply({ content: "Select user to kick:", components: [row], ephemeral: true });
 
                // 🆕 زر Info
+// Handling ديال الاختيار من الـ Select Menu
+if (interaction.isStringSelectMenu() && interaction.customId === "coownerSelect") {
+  const selectedUserId = interaction.values[0];
+  const member = await interaction.guild.members.fetch(selectedUserId);
+
+  // هنا تقدر تخزن العضو كـ Co-Owner فـ متغير أو DB باش تبان المعلومة فـ Info Panel
+  return interaction.reply({ content: `✅ ${member.displayName} ولى Co-Owner ديال القناة!`, ephemeral: true });
+}
+
         
 case "info":
   const vc = interaction.channel;
