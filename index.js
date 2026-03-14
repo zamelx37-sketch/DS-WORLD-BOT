@@ -156,25 +156,25 @@ case "info":
   const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
   const createdAt = vc.createdAt.toLocaleString();
   const activeFor = Math.floor((Date.now() - vc.createdAt.getTime()) / 1000) + "s";
-  const coOwners = "0/5"; // تقدر تبدلها إذا عندك نظام Co-Owners
+  const coOwners = "0/5"; 
   const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
   const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
   const infoEmbed = new EmbedBuilder()
-    .setColor(0x9b59b6) // لون أنيق بنفسجي
+    .setColor(0x9b59b6)
     .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless") // أيقونة Info
-    .setDescription("\n♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡\n")
+    .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
     .addFields(
-      { name: "𝒪𝓌𝓃𝑒𝓇 👑", value: `@${owner}`, inline: true },
-      { name: "𝒩𝒶𝓂𝑒 📛", value: name, inline: true },
-      { name: "𝐿𝒾𝓂𝒾𝓉 👥", value: limit, inline: true },
-      { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 ⏰", value: createdAt, inline: false },
-      { name: "𝒜𝒸𝓉𝒾𝓋𝑒 𝐹𝑜𝓇 ⏱️", value: activeFor, inline: true },
-      { name: " 𝒞𝑜-𝑜𝓌𝓃𝑒𝓇𝓈 🧑‍🤝‍🧑", value: coOwners, inline: true },
-      { name: "𝐻𝒾𝒹𝒹𝑒𝓃 🙈", value: hidden, inline: true },
-      { name: "𝐿𝑜𝒸𝓀𝑒𝒹 🔒", value: locked, inline: true }
+      { name: "👑 Owner", value: `@${owner}`, inline: false },
+      { name: "<:nameicon:1482407109705601198> Name", value: name, inline: false }, // أيقونة Name
+      { name: "<:limiticon:1482407403369795615> Limit", value: limit, inline: false }, // أيقونة Limit
+      { name: "<:createdicon:1482408011518447668> Created At", value: createdAt, inline: false }, // أيقونة Created At
+      { name: "<:activeicon:1482408245049032724> Active For", value: activeFor, inline: false }, // أيقونة Active For
+      { name: "<:coowner:1482406793639362748> Co-Owners", value: coOwners, inline: false }, // أيقونة Co-Owners
+      { name: "<:hiddenicon:1481306721728204933> Hidden", value: hidden, inline: false }, // أيقونة Hidden
+      { name: "🔒 Locked", value: locked, inline: false }
     )
-    .setFooter({ text: " ✨ 𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝑜𝓇𝓁𝒹 ✨ " });
+    .setFooter({ text: "✨ Powered by DS WORLD ✨" });
 
   return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
 
