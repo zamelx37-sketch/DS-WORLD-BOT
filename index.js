@@ -187,20 +187,20 @@ client.on("interactionCreate", async interaction => {
           const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
 
           const infoEmbed = new EmbedBuilder()
-            .setColor(0x9b59b6)
-            .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless")
-            .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
-            .addFields(
-              { name: "𝒪𝓌𝓃𝑒𝓇 <:owner:1482387316088770681> :", value: owner, inline: false },
-              { name: "𝒩𝒶𝓂𝑒 <:name:1482406793639362748> :", value: name, inline: false },
-              { name: "𝐿𝒾𝓂𝒾𝓉 <:limit:1481307222771236996> :", value: limitValue, inline: false },
-              { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 <:created:1481307321400299570> :", value: createdAt, inline: false },
-              { name: "𝒜𝒸𝓉𝒾𝓋𝒶𝓉𝑒 𝒻𝑜𝓇 <:active:1481306958257455104> :", value: activeFor, inline: false },
-              { name: "𝒞𝑜-𝑜𝓌𝓃𝑒𝓇𝓈 <:coowners:1482406793639362748> :", value: coOwners, inline: false },
-              { name: "𝐻𝒾𝒹𝒹𝑒𝓃 <:hidden:1481306721728204933> :", value: hidden, inline: false },
-              { name: "𝐿𝑜𝒸𝓀𝑒𝒹 <:locked:1481306495932043346> :", value: locked, inline: false }
-            )
-            .setFooter({ text: "✨ Powered by DS WORLD ✨" });
+  .setColor(0x9b59b6)
+  .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless")
+  .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
+  .addFields(
+    { name: "𝒪𝓌𝓃𝑒𝓇 <:owner:1482387316088770681> :", value: owner, inline: false },
+    { name: "𝒩𝒶𝓂𝑒 <:name:1482406793639362748> :", value: name, inline: false },
+    { name: "𝐿𝒾𝓂𝒾𝓉 <:limit:1481307222771236996> :", value: limit, inline: false },
+    { name: "𝒞𝓇𝑒𝒶𝓉𝑒𝒹 𝒶𝓉 <:created:1481307321400299570> :", value: createdAt, inline: false },
+    { name: "𝒜𝒸𝓉𝒾𝓋𝒶𝓉𝑒 𝒻𝑜𝓇 <:active:1481306958257455104> :", value: activeFor, inline: false },
+    { name: "𝒞𝑜-𝑜𝓌𝓃𝑒𝓇𝓈 <:coowners:1482406793639362748> :", value: coOwners, inline: false },
+    { name: "𝐻𝒾𝒹𝒹𝑒𝓃 <:hidden:1481306721728204933> :", value: hidden, inline: false },
+    { name: "𝐿𝑜𝒸𝓀𝑒𝒹 <:locked:1481306495932043346> :", value: locked, inline: false }
+  )
+  .setFooter({ text: "✨ Powered by DS WORLD ✨" });
 
           return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
       }
