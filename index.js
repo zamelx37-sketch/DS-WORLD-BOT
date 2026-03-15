@@ -140,7 +140,7 @@ client.on("interactionCreate", async interaction => {
           return interaction.showModal(limitModal);
 
         case "delete":
-          await interaction.reply({content:"Channel Deleted 🗑",ephemeral:true});
+          await interaction.reply({content:"𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒟𝑒𝓁𝑒𝓉𝑒𝒹!🗑",ephemeral:true});
           return interaction.channel.delete();
 
         case "kick":
@@ -181,7 +181,7 @@ client.on("interactionCreate", async interaction => {
           const name = vc.name;
           const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
           const createdAt = vc.createdAt.toLocaleString();
-          const activeFor = "N/A";
+          const activeFor = "0 ? ${hours}h ${minutes % 60}m : ${minutes}m ${seconds % 60}s;";
           const coOwners = "0/5";
           const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
           const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
@@ -200,7 +200,7 @@ client.on("interactionCreate", async interaction => {
     { name: "𝐻𝒾𝒹𝒹𝑒𝓃 <:hidden:1481306721728204933> :", value: hidden, inline: false },
     { name: "𝐿𝑜𝒸𝓀𝑒𝒹 <:locked:1481306495932043346> :", value: locked, inline: false }
   )
-  .setFooter({ text: "✨ Powered by DS WORLD ✨" });
+  .setFooter({ text: "𝒫𝑜𝓌𝑒𝓇𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷✨" });
 
           return interaction.reply({ embeds: [infoEmbed], ephemeral: true });
       }
