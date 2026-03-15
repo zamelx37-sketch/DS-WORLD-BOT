@@ -71,37 +71,23 @@ client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
 client.on("voiceStateUpdate", async (oldState, newState) => {
   try {
     if (newState.channelId === CREATE_CHANNEL_ID) {
-      // نتأكد ما كاينش قناة بنفس الاسم
-      const existing = newState.guild.channels.cache.find(
-        ch => ch.name === `${newState.member.displayName} 'VC`
-      );
-      if (existing) return; // ما نصايبش قناة جديدة إذا وحدة بنفس الاسم موجودة
-
       const displayName = newState.member.displayName;
 
+      // نتأكد ما نصايبش قناة بنفس الاسم
+      const existing = newState.guild.channels.cache.find(
+        ch => ch.name === `${displayName} VC`
+      );
+      if (existing) return;
+
       const voiceChannel = await newState.guild.channels.create({
-        name: `${displayName} 'VC`,
+        name: `${displayName} VC`,
         type: ChannelType.GuildVoice,
         parent: newState.channel?.parent
       });
 
       await newState.member.voice.setChannel(voiceChannel);
 
-      // باقي الكود ديال Embed + Buttons...
-    }
-
-    // حذف القنوات الفارغة
-    if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
-      if (oldState.channel.members.size === 0 && oldState.channel.name.endsWith("VC") && oldState.channel.deletable) {
-        await oldState.channel.delete();
-        console.log(`Deleted empty bot VC: ${oldState.channel.name}`);
-      }
-    }
-  } catch(err) {
-    console.error(err);
-  }
-});
-
+      // ✅ هنا تحط الـ embed و الأزرار
       const embed = new EmbedBuilder()
         .setTitle("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝐿𝒪𝒱𝐸𝒮 𝒴𝒪𝒰 ♡")
         .setDescription(`𝒲𝐸𝐿𝐶𝒪𝑀𝐸, ${displayName}!\n𝐸𝓃𝒿𝑜𝓎 𝓎𝑜𝓊𝓇 𝓈𝓉𝒶𝓎.\n[𝒟𝑒𝓋𝑒𝓁𝑜𝓅𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷](https://discord.gg/PayB3YesXC)`)
@@ -127,13 +113,18 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
     }
 
+    // ✅ حذف القنوات الفارغة
     if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
-      if (oldState.channel.members.size === 0 && oldState.channel.name.endsWith("VC") && oldState.channel.deletable) {
+      if (
+        oldState.channel.members.size === 0 &&
+        oldState.channel.name.endsWith("VC") &&
+        oldState.channel.deletable
+      ) {
         await oldState.channel.delete();
+        console.log(`Deleted empty bot VC: ${oldState.channel.name}`);
       }
     }
-
-  } catch(err) {
+  } catch (err) {
     console.error(err);
   }
 });
