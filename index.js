@@ -17,8 +17,8 @@ const {
 // Bot Token
 const TOKEN = process.env.TOKEN;
 
-// Channel to monitor (مبدئياً فارغ)
-let CREATE_CHANNEL_ID = null;
+// Channel to monitor
+const CREATE_CHANNEL_ID = "1480913492574867519";
 
 const client = new Client({
   intents: [
@@ -30,54 +30,14 @@ const client = new Client({
   ]
 });
 
-// ✅ أمر !v باش تختار القناة الصوتية
-client.on("messageCreate", async message => {
-  if (message.content === "!v") {
-    const voiceChannels = message.guild.channels.cache
-      .filter(ch => ch.type === ChannelType.GuildVoice);
-
-    if (voiceChannels.size === 0) {
-      return message.reply("⚠️!ما كايناش قنوات صوتية فهاد السيرفر");
-    }
-
-    const options = voiceChannels.map(vc => ({
-      label: vc.name,
-      value: vc.id
-    }));
-
-    const menu = new StringSelectMenuBuilder()
-      .setCustomId("selectCreateChannel")
-      .setPlaceholder("🔊 VCs اختار القناة اللي بغيت منها يتخلقو ")
-      .addOptions(options);
-
-    const row = new ActionRowBuilder().addComponents(menu);
-
-    return message.reply({ content: "اختار القناة الصوتية:", components: [row] });
-  }
-});
-
-// ✅ التعامل مع الاختيار من القائمة
-client.on("interactionCreate", async interaction => {
-  if (interaction.isStringSelectMenu() && interaction.customId === "selectCreateChannel") {
-    CREATE_CHANNEL_ID = interaction.values[0];
-    return interaction.reply({ content: ` البوت غادي يخلق VCs من ✅: <#${CREATE_CHANNEL_ID}>`, ephemeral: true });
-  }
-});
-
-// ✅ هنا تحط باقي الكود ديالك (voiceStateUpdate, الأزرار, المودالات...)
-
 client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
   try {
-    if (newState.channelId === CREATE_CHANNEL_ID) {
-      const displayName = newState.member.displayName;
 
-      // نتأكد ما نصايبش قناة بنفس الاسم
-      const existing = newState.guild.channels.cache.find(
-        ch => ch.name === `${displayName} VC`
-      );
-      if (existing) return;
+    if (newState.channelId === CREATE_CHANNEL_ID) {
+
+      const displayName = newState.member.displayName;
 
       const voiceChannel = await newState.guild.channels.create({
         name: `${displayName} VC`,
@@ -87,7 +47,6 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
       await newState.member.voice.setChannel(voiceChannel);
 
-      // ✅ هنا تحط الـ embed و الأزرار
       const embed = new EmbedBuilder()
         .setTitle("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝐿𝒪𝒱𝐸𝒮 𝒴𝒪𝒰 ♡")
         .setDescription(`𝒲𝐸𝐿𝐶𝒪𝑀𝐸, ${displayName}!\n𝐸𝓃𝒿𝑜𝓎 𝓎𝑜𝓊𝓇 𝓈𝓉𝒶𝓎.\n[𝒟𝑒𝓋𝑒𝓁𝑜𝓅𝑒𝒹 𝒷𝓎 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷](https://discord.gg/PayB3YesXC)`)
@@ -113,18 +72,13 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
     }
 
-    // ✅ حذف القنوات الفارغة
     if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
-      if (
-        oldState.channel.members.size === 0 &&
-        oldState.channel.name.endsWith("VC") &&
-        oldState.channel.deletable
-      ) {
+      if (oldState.channel.members.size === 0 && oldState.channel.name.endsWith("VC") && oldState.channel.deletable) {
         await oldState.channel.delete();
-        console.log(`Deleted empty bot VC: ${oldState.channel.name}`);
       }
     }
-  } catch (err) {
+
+  } catch(err) {
     console.error(err);
   }
 });
