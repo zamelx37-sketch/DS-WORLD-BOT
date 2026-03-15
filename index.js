@@ -53,70 +53,22 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
         .setColor(0x5865f2)
         .setImage("https://cdn.discordapp.com/attachments/1410364493824917534/1481291852492570664/Copilot_20260311_132153.png");
 
-    const row1 = new ActionRowBuilder().addComponents(
-  new ButtonBuilder()
-    .setCustomId("lock")
-    .setLabel("Lock")
-    .setStyle(ButtonStyle.Danger)
-    .setEmoji("<:lock:1482388410717962386>"),
+      const row1 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId("lock").setLabel("Lock").setStyle(ButtonStyle.Danger),
+        new ButtonBuilder().setCustomId("unlock").setLabel("Unlock").setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId("hide").setLabel("Hide").setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId("show").setLabel("Show").setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId("rename").setLabel("Rename").setStyle(ButtonStyle.Secondary)
+      );
 
-  new ButtonBuilder()
-    .setCustomId("unlock")
-    .setLabel("Unlock")
-    .setStyle(ButtonStyle.Success)
-    .setEmoji("<:unlock:1482388410717962387>"),
+      const row2 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId("kick").setLabel("Kick User").setStyle(ButtonStyle.Danger),
+        new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId("coowners").setLabel("Co-Owners").setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger),
+        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary)
+      );
 
-  new ButtonBuilder()
-    .setCustomId("hide")
-    .setLabel("Hide")
-    .setStyle(ButtonStyle.Secondary)
-    .setEmoji("<:hide:1482388410717962388>"),
-
-  new ButtonBuilder()
-    .setCustomId("show")
-    .setLabel("Show")
-    .setStyle(ButtonStyle.Primary)
-    .setEmoji("<:show:1482388410717962389>"),
-
-  new ButtonBuilder()
-    .setCustomId("rename")
-    .setLabel("Rename")
-    .setStyle(ButtonStyle.Secondary)
-    .setEmoji("<:rename:1482388410717962390>")
-);
-
-const row2 = new ActionRowBuilder().addComponents(
-  new ButtonBuilder()
-    .setCustomId("kick")
-    .setLabel("Kick User")
-    .setStyle(ButtonStyle.Danger)
-    .setEmoji("<:kick:1482388410717962391>"),
-
-  new ButtonBuilder()
-    .setCustomId("limit")
-    .setLabel("Set User Limit")
-    .setStyle(ButtonStyle.Primary)
-    .setEmoji("<:limit:1482388410717962392>"),
-
-  new ButtonBuilder()
-    .setCustomId("coowners")
-    .setLabel("Co-Owners")
-    .setStyle(ButtonStyle.Secondary)
-    .setEmoji("<:coowners:1482388410717962393>"),
-
-  new ButtonBuilder()
-    .setCustomId("delete")
-    .setLabel("Delete Channel")
-    .setStyle(ButtonStyle.Danger)
-    .setEmoji("<:delete:1482388410717962394>"),
-
-  new ButtonBuilder()
-    .setCustomId("info")
-    .setLabel("Info")
-    .setStyle(ButtonStyle.Secondary)
-    .setEmoji("<:info:1482388410717962395>")
-);
- 
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
     }
 
@@ -239,8 +191,8 @@ client.on("interactionCreate", async interaction => {
             .setThumbnail("https://cdn.discordapp.com/emojis/1482388410717962386.png?size=96&quality=lossless")
             .setDescription("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝒫𝒜𝒩𝐸𝐿 ♡")
             .addFields(
-              { name: "Owner", value: `@${owner}`, inline: false },
-              { name: "Name", value: name, inline: false },
+              { name: "𝒪𝓌𝓃𝑒𝓇 <:owner:1482387316088770681> :", value: owner, inline: false },
+              { name: "𝒩𝒶𝓂𝑒 <:name:1482406793639362748> :", value: name, inline: false },
               { name: "Limit", value: limit, inline: false },
               { name: "Created At", value: createdAt, inline: false },
               { name: "Active For", value: activeFor, inline: false },
