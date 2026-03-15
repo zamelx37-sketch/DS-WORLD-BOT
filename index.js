@@ -30,16 +30,41 @@ const client = new Client({
   ]
 });
 
-// أمر !v باش تختار القناة
+// ✅ أمر !v باش تختار القناة الصوتية
 client.on("messageCreate", async message => {
-  if (message.content.startsWith("!v")) {
-    const channel = message.mentions.channels.first();
-    if (!channel) return message.reply("⚠️ Mention the channel you want to use!");
+  if (message.content === "!v") {
+    const voiceChannels = message.guild.channels.cache
+      .filter(ch => ch.type === ChannelType.GuildVoice);
 
-    CREATE_CHANNEL_ID = channel.id;
-    return message.reply(`✅ Bot will now create VCs from: ${channel.name}`);
+    if (voiceChannels.size === 0) {
+      return message.reply("⚠️ ما كايناش قنوات صوتية فهاد السيرفر!");
+    }
+
+    const options = voiceChannels.map(vc => ({
+      label: vc.name,
+      value: vc.id
+    }));
+
+    const menu = new StringSelectMenuBuilder()
+      .setCustomId("selectCreateChannel")
+      .setPlaceholder("🔊 اختار القناة اللي بغيت منها يتخلقو VCs")
+      .addOptions(options);
+
+    const row = new ActionRowBuilder().addComponents(menu);
+
+    return message.reply({ content: "اختار القناة الصوتية:", components: [row] });
   }
 });
+
+// ✅ التعامل مع الاختيار من القائمة
+client.on("interactionCreate", async interaction => {
+  if (interaction.isStringSelectMenu() && interaction.customId === "selectCreateChannel") {
+    CREATE_CHANNEL_ID = interaction.values[0];
+    return interaction.reply({ content: `✅ البوت غادي يخلق VCs من: <#${CREATE_CHANNEL_ID}>`, ephemeral: true });
+  }
+});
+
+// ✅ هنا تحط باقي الكود ديالك (voiceStateUpdate, الأزرار, المودالات...)
 
 client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
 
