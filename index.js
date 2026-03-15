@@ -17,8 +17,8 @@ const {
 // Bot Token
 const TOKEN = process.env.TOKEN;
 
-// Channel to monitor
-const CREATE_CHANNEL_ID = "1480913492574867519";
+// Channel to monitor (مبدئياً فارغ)
+let CREATE_CHANNEL_ID = null;
 
 const client = new Client({
   intents: [
@@ -28,6 +28,17 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers
   ]
+});
+
+// أمر !v باش تختار القناة
+client.on("messageCreate", async message => {
+  if (message.content.startsWith("!v")) {
+    const channel = message.mentions.channels.first();
+    if (!channel) return message.reply("⚠️ Mention the channel you want to use!");
+
+    CREATE_CHANNEL_ID = channel.id;
+    return message.reply(`✅ Bot will now create VCs from: ${channel.name}`);
+  }
 });
 
 client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
