@@ -37,7 +37,7 @@ client.on("messageCreate", async message => {
       .filter(ch => ch.type === ChannelType.GuildVoice);
 
     if (voiceChannels.size === 0) {
-      return message.reply("⚠️ ما كايناش قنوات صوتية فهاد السيرفر!");
+      return message.reply("⚠️!ما كايناش قنوات صوتية فهاد السيرفر");
     }
 
     const options = voiceChannels.map(vc => ({
@@ -47,7 +47,7 @@ client.on("messageCreate", async message => {
 
     const menu = new StringSelectMenuBuilder()
       .setCustomId("selectCreateChannel")
-      .setPlaceholder("🔊 اختار القناة اللي بغيت منها يتخلقو VCs")
+      .setPlaceholder("🔊 VCs اختار القناة اللي بغيت منها يتخلقو ")
       .addOptions(options);
 
     const row = new ActionRowBuilder().addComponents(menu);
@@ -60,7 +60,7 @@ client.on("messageCreate", async message => {
 client.on("interactionCreate", async interaction => {
   if (interaction.isStringSelectMenu() && interaction.customId === "selectCreateChannel") {
     CREATE_CHANNEL_ID = interaction.values[0];
-    return interaction.reply({ content: `✅ البوت غادي يخلق VCs من: <#${CREATE_CHANNEL_ID}>`, ephemeral: true });
+    return interaction.reply({ content: ` البوت غادي يخلق VCs من ✅: <#${CREATE_CHANNEL_ID}>`, ephemeral: true });
   }
 });
 
@@ -70,18 +70,37 @@ client.once("ready", () => console.log("DS WORLD BOT ONLINE 🚀"));
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
   try {
-
     if (newState.channelId === CREATE_CHANNEL_ID) {
+      // نتأكد ما كاينش قناة بنفس الاسم
+      const existing = newState.guild.channels.cache.find(
+        ch => ch.name === `${newState.member.displayName} 'VC`
+      );
+      if (existing) return; // ما نصايبش قناة جديدة إذا وحدة بنفس الاسم موجودة
 
       const displayName = newState.member.displayName;
 
       const voiceChannel = await newState.guild.channels.create({
-        name: `${displayName} VC`,
+        name: `${displayName} 'VC`,
         type: ChannelType.GuildVoice,
         parent: newState.channel?.parent
       });
 
       await newState.member.voice.setChannel(voiceChannel);
+
+      // باقي الكود ديال Embed + Buttons...
+    }
+
+    // حذف القنوات الفارغة
+    if (oldState.channel && oldState.channel.id !== CREATE_CHANNEL_ID) {
+      if (oldState.channel.members.size === 0 && oldState.channel.name.endsWith("VC") && oldState.channel.deletable) {
+        await oldState.channel.delete();
+        console.log(`Deleted empty bot VC: ${oldState.channel.name}`);
+      }
+    }
+  } catch(err) {
+    console.error(err);
+  }
+});
 
       const embed = new EmbedBuilder()
         .setTitle("♡ 𝒟𝒮 𝒲𝒪𝑅𝐿𝐷 𝐿𝒪𝒱𝐸𝒮 𝒴𝒪𝒰 ♡")
