@@ -181,7 +181,9 @@ client.on("interactionCreate", async interaction => {
           const name = vc.name;
           const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
           const createdAt = vc.createdAt.toLocaleString();
-          const activeFor = "0 ? ${hours}h ${minutes % 60}m : ${minutes}m ${seconds % 60}s;";
+          const activeFor = hours > 0 
+                         ? `${hours}h ${minutes % 60}m` 
+                          : `${minutes}m ${seconds % 60}s`;
           const coOwners = "0/5";
           const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
           const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
