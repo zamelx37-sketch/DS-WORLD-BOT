@@ -66,7 +66,9 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
         new ButtonBuilder().setCustomId("limit").setLabel("Set User Limit").setStyle(ButtonStyle.Primary),
         new ButtonBuilder().setCustomId("coowners").setLabel("Co-Owners").setStyle(ButtonStyle.Secondary),
         new ButtonBuilder().setCustomId("delete").setLabel("Delete Channel").setStyle(ButtonStyle.Danger),
-        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary)
+        new ButtonBuilder().setCustomId("info").setLabel("Info").setStyle(ButtonStyle.Secondary),
+ // ✅ زر Reject جديد
+  new ButtonBuilder().setCustomId("reject").setLabel("Reject").setStyle(ButtonStyle.Danger)
       );
 
       await voiceChannel.send({ embeds: [embed], components: [row1, row2] });
@@ -123,12 +125,23 @@ client.on("interactionCreate", async interaction => {
               )
             );
           return interaction.showModal(renameModal);
-          case "reject":
-                             const memberId = interaction.user.id; // أو تقدر تختار عضو من select menu
-                                  await interaction.channel.permissionOverwrites.edit(memberId, {
-                                 Connect: false // يمنعو من الدخول للقناة الصوتية
-  });
-                        return interaction.reply({ content: `❌ ${interaction.user.displayName} ما يقدرش يدخل هاد القناة مرة أخرى!`, ephemeral: true });
+
+              // ✅ هنا الكود ديال Reject
+    case "reject":
+      const options = interaction.channel.members
+        .filter(m => !m.user.bot)
+        .map(m => ({ label: m.displayName, value: m.id }));
+
+      if (options.length === 0)
+        return interaction.reply({ content: "ما كاين حتى عضو باش نرفضو", ephemeral: true });
+
+      const rejectMenu = new StringSelectMenuBuilder()
+        .setCustomId("rejectSelect")
+        .setPlaceholder("اختار العضو اللي بغيت تمنعو")
+        .addOptions(options);
+
+      const rejectRow = new ActionRowBuilder().addComponents(rejectMenu);
+      return interaction.reply({ content: "اختار العضو اللي بغيت تمنعو من الدخول:", components: [rejectRow], ephemeral: true });
 
         case "limit":
           const limitModal = new ModalBuilder()
