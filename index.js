@@ -95,19 +95,19 @@ client.on("interactionCreate", async interaction => {
 
         case "lock":
           await interaction.channel.permissionOverwrites.edit(everyone,{Connect:false});
-          return interaction.reply({content:"Channel Locked 🔒",ephemeral:true});
+          return interaction.reply({content:"𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐿𝑜𝒸𝓀𝑒𝒹!🔒",ephemeral:true});
 
         case "unlock":
           await interaction.channel.permissionOverwrites.edit(everyone,{Connect:true});
-          return interaction.reply({content:"Channel Unlocked 🔓",ephemeral:true});
+          return interaction.reply({content:"𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒰𝓃𝓁𝑜𝒸𝓀𝑒𝒹!🔓",ephemeral:true});
 
         case "hide":
           await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:false});
-          return interaction.reply({content:"Channel Hidden 🙈",ephemeral:true});
+          return interaction.reply({content:"𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝐻𝒾𝒹𝒹𝑒𝓃!🙈",ephemeral:true});
 
         case "show":
           await interaction.channel.permissionOverwrites.edit(everyone,{ViewChannel:true});
-          return interaction.reply({content:"Channel Visible 👁",ephemeral:true});
+          return interaction.reply({content:"𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝒮𝒽𝑜𝓌𝓃!👁",ephemeral:true});
 
         case "rename":
           const renameModal = new ModalBuilder()
@@ -127,7 +127,7 @@ client.on("interactionCreate", async interaction => {
         case "limit":
           const limitModal = new ModalBuilder()
             .setCustomId("limitModal")
-            .setTitle("User Limit")
+            .setTitle("𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉")
             .addComponents(
               new ActionRowBuilder().addComponents(
                 new TextInputBuilder()
@@ -181,9 +181,7 @@ client.on("interactionCreate", async interaction => {
           const name = vc.name;
           const limit = vc.userLimit === 0 ? "Unlimited" : vc.userLimit.toString();
           const createdAt = vc.createdAt.toLocaleString();
-          const activeFor = hours > 0 
-                         ? `${hours}h ${minutes % 60}m` 
-                          : `${minutes}m ${seconds % 60}s`;
+          const activeFor =  "N/A";
           const coOwners = "0/5";
           const hidden = vc.permissionsFor(interaction.guild.roles.everyone).has("ViewChannel") ? "No" : "Yes";
           const locked = vc.permissionsFor(interaction.guild.roles.everyone).has("Connect") ? "No" : "Yes";
@@ -215,7 +213,7 @@ client.on("interactionCreate", async interaction => {
 
         const newName = interaction.fields.getTextInputValue("newName");
         await interaction.channel.setName(newName);
-        return interaction.reply({content:`Channel renamed to ${newName}`,ephemeral:true});
+        return interaction.reply({content:`𝒞𝒽𝒶𝓃𝓃𝑒𝓁 𝑅𝑒𝓃𝒶𝓂𝑒𝒹 𝓉𝑜: ${newName}✏️`,ephemeral:true});
 
       }
 
@@ -226,7 +224,7 @@ client.on("interactionCreate", async interaction => {
           return interaction.reply({content:"Invalid number",ephemeral:true});
         if(limit>99) limit=99;
         await interaction.channel.setUserLimit(limit);
-        return interaction.reply({content:`User limit set to ${limit}`,ephemeral:true});
+        return interaction.reply({content:`𝒰𝓈𝑒𝓇 𝐿𝒾𝓂𝒾𝓉 𝒮𝑒𝓉 𝒯𝑜 ${limit}👥`,ephemeral:true});
 
       }
 
@@ -238,7 +236,7 @@ client.on("interactionCreate", async interaction => {
 
         const member = interaction.guild.members.cache.get(interaction.values[0]);
         await member.voice.disconnect();
-        return interaction.update({content:`${member.displayName} kicked`,components:[]});
+        return interaction.update({content:`${member.displayName} 𝒦𝒾𝒸𝓀𝑒𝒹!👢`,components:[]});
 
       }
 
