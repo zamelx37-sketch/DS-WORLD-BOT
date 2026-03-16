@@ -123,6 +123,12 @@ client.on("interactionCreate", async interaction => {
               )
             );
           return interaction.showModal(renameModal);
+          case "reject":
+                             const memberId = interaction.user.id; // أو تقدر تختار عضو من select menu
+                                  await interaction.channel.permissionOverwrites.edit(memberId, {
+                                 Connect: false // يمنعو من الدخول للقناة الصوتية
+  });
+                        return interaction.reply({ content: `❌ ${interaction.user.displayName} ما يقدرش يدخل هاد القناة مرة أخرى!`, ephemeral: true });
 
         case "limit":
           const limitModal = new ModalBuilder()
