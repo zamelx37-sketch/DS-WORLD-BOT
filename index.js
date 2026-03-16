@@ -126,23 +126,22 @@ client.on("interactionCreate", async interaction => {
             );
           return interaction.showModal(renameModal);
 
-              // ✅ هنا الكود ديال Reject
-    case "reject":
-      const options = interaction.channel.members
-        .filter(m => !m.user.bot)
-        .map(m => ({ label: m.displayName, value: m.id }));
+             case "reject":
+  const rejectOptions = interaction.channel.members
+    .filter(m => !m.user.bot)
+    .map(m => ({ label: m.displayName, value: m.id }));
 
-      if (options.length === 0)
-        return interaction.reply({ content: "ما كاين حتى عضو باش نرفضو", ephemeral: true });
+  if (rejectOptions.length === 0)
+    return interaction.reply({ content: "ما كاين حتى عضو باش نرفضو", ephemeral: true });
 
-      const rejectMenu = new StringSelectMenuBuilder()
-        .setCustomId("rejectSelect")
-        .setPlaceholder("اختار العضو اللي بغيت تمنعو")
-        .addOptions(options);
+  const rejectMenu = new StringSelectMenuBuilder()
+    .setCustomId("rejectSelect")
+    .setPlaceholder("اختار العضو اللي بغيت تمنعو")
+    .addOptions(rejectOptions);
 
-      const rejectRow = new ActionRowBuilder().addComponents(rejectMenu);
-      return interaction.reply({ content: "اختار العضو اللي بغيت تمنعو من الدخول:", components: [rejectRow], ephemeral: true });
-
+  const rejectRow = new ActionRowBuilder().addComponents(rejectMenu);
+  return interaction.reply({ content: "اختار العضو اللي بغيت تمنعو من الدخول:", components: [rejectRow], ephemeral: true });
+ 
         case "limit":
           const limitModal = new ModalBuilder()
             .setCustomId("limitModal")
@@ -163,20 +162,20 @@ client.on("interactionCreate", async interaction => {
           return interaction.channel.delete();
 
         case "kick":
-          const options = interaction.channel.members
-            .filter(m=>!m.user.bot && m.id!==interaction.user.id)
-            .map(m=>({label:m.displayName,value:m.id}));
+  const kickOptions = interaction.channel.members
+    .filter(m=>!m.user.bot && m.id!==interaction.user.id)
+    .map(m=>({label:m.displayName,value:m.id}));
 
-          if(options.length===0)
-            return interaction.reply({content:"No users to kick",ephemeral:true});
+  if(kickOptions.length===0)
+    return interaction.reply({content:"No users to kick",ephemeral:true});
 
-          const kickMenu = new StringSelectMenuBuilder()
-            .setCustomId("kickSelect")
-            .setPlaceholder("Select user")
-            .addOptions(options);
+  const kickMenu = new StringSelectMenuBuilder()
+    .setCustomId("kickSelect")
+    .setPlaceholder("Select user")
+    .addOptions(kickOptions);
 
-          const kickRow = new ActionRowBuilder().addComponents(kickMenu);
-          return interaction.reply({content:"Select user to kick:",components:[kickRow],ephemeral:true});
+  const kickRow = new ActionRowBuilder().addComponents(kickMenu);
+  return interaction.reply({content:"Select user to kick:",components:[kickRow],ephemeral:true});
 
         case "coowners":
           const members = interaction.channel.members
